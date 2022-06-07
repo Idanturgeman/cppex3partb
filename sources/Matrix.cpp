@@ -1,6 +1,53 @@
 #include "Matrix.hpp"
 namespace zich
 {
+    bool Matrix::operator<(Matrix &mat)
+    {
+        int small = 0;
+        if (this->row != mat.row || this->col != mat.col)
+        {
+            small--;
+            throw runtime_error("row and cols must be equals");
+        }
+        small++;
+        return this->sumMatrix() < mat.sumMatrix();
+    }
+    bool Matrix::operator<=(Matrix &mat)
+    {
+        int smalleq = 0;
+        if (this->row != mat.row || this->col != mat.col)
+        {
+            smalleq--;
+            throw runtime_error("row and cols must be equals");
+        }
+        smalleq++;
+        return this->sumMatrix() <= mat.sumMatrix();
+    }
+
+     Matrix Matrix::operator*(const double scalar)
+    {
+        int multi = 0;
+        vector<double> mat3_data;
+        int x = 0;
+        mat3_data.resize((unsigned int)(row * col));
+        for (int i = 0; i < this->row; i++)
+        {
+            multi++;
+            for (int j = 0; j < this->col; j++)
+            {
+                multi++;
+                if (this->data[(unsigned int)(i * this->col + j)] == 0)
+                {
+                    multi++;
+                    continue;
+                }
+                mat3_data[(unsigned int)(i * this->col + j)] = this->data[(unsigned int)(i * this->col + j)] * scalar;
+            }
+            x++;
+        }
+        Matrix mat3(mat3_data, this->row, this->col);
+        return mat3;
+    }
     static int numOfMatrix = 0;
     Matrix::Matrix(const vector<double> &data, const int row, const int col)
     {
@@ -26,29 +73,7 @@ namespace zich
         numOfMatrix--;
     }
 
-    Matrix Matrix::operator+(Matrix const &mat)
-    {
-        int plus = 0;
-        if (this->row != mat.row || this->col != mat.col)
-        {
-            throw runtime_error("row and col must be equal");
-        }
-        int x = 0;
-        vector<double> mat3_data;
-        mat3_data.resize((unsigned int)(row * col));
-        for (int i = 0; i < row; i++)
-        {
-            plus++;
-            for (int j = 0; j < col; j++)
-            {
-                plus++;
-                mat3_data[(unsigned int)(i * col + j)] = this->data[(unsigned int)(i * col + j)] + mat.data[(unsigned int)(i * col + j)];
-            }x++;
-        }
-        x++;
-        Matrix mat3(mat3_data, this->row, mat.col);
-        return mat3;
-    }
+   
     Matrix &Matrix::operator++()
     {
         int plusplus = 0;
@@ -105,31 +130,7 @@ namespace zich
         }
         return *this;
     }
-    Matrix Matrix::operator-(const Matrix &mat)
-    {
-        int minus = 0;
-        if (this->row != mat.row || this->col != mat.col)
-        {
-            minus--;
-            throw runtime_error("row and col must be equal");
-        }
-        vector<double> mat3_data;
-        int x = 0;
-        mat3_data.resize((unsigned int)(row * col));
-        for (int i = 0; i < row; i++)
-        {
-            minus++;
-            for (int j = 0; j < col; j++)
-            {
-                minus++;
-                mat3_data[(unsigned int)(i * col + j)] = this->data[(unsigned int)(i * col + j)] - mat.data[(unsigned int)(i * col + j)];
-                x++;
-            }   
-            x++;
-        }
-        Matrix mat3(mat3_data, this->row, mat.col);
-        return mat3;
-    }
+   
     Matrix &Matrix::operator--()
     {
         int minusminus = 0;
@@ -253,30 +254,7 @@ namespace zich
         return *this;
     }
 
-    Matrix Matrix::operator*(const double scalar)
-    {
-        int multi = 0;
-        vector<double> mat3_data;
-        int x = 0;
-        mat3_data.resize((unsigned int)(row * col));
-        for (int i = 0; i < this->row; i++)
-        {
-            multi++;
-            for (int j = 0; j < this->col; j++)
-            {
-                multi++;
-                if (this->data[(unsigned int)(i * this->col + j)] == 0)
-                {
-                    multi++;
-                    continue;
-                }
-                mat3_data[(unsigned int)(i * this->col + j)] = this->data[(unsigned int)(i * this->col + j)] * scalar;
-            }
-            x++;
-        }
-        Matrix mat3(mat3_data, this->row, this->col);
-        return mat3;
-    }
+   
     Matrix &Matrix::operator*=(const double scalar)
     {
         int muleq = 0;
@@ -297,6 +275,55 @@ namespace zich
             x++;
         }
         return *this;
+    }
+     bool operator ==(Matrix const &mat1,Matrix const &mat2)
+    {
+        int eq = 0;
+        if (mat1.row != mat2.row || mat1.col != mat2.col)
+        {
+            eq--;
+            throw invalid_argument("row and cols must be equals");
+        }
+        for (int i = 0; i < mat1.row; i++)
+        {
+            eq++;
+            for (int j = 0; j < mat1.col; j++)
+            {
+                eq++;
+                int p = 0;
+                if (mat1.data[(unsigned int)(i * mat1.col + j)] != mat2.data[(unsigned int)(i * mat2.col + j)])
+                {
+                    int c = 0;
+                    eq++;
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    Matrix operator*(const double scalar, Matrix &mat)
+    {
+        int multi = 0;
+        vector<double> mat3_data;
+        int v = 0;
+        mat3_data.resize((unsigned int)(mat.row * mat.col));
+        for (int i = 0; i < mat.row; i++)
+        {
+            multi++;
+            for (int j = 0; j < mat.col; j++)
+            {
+                multi++;
+                if (mat.data[(unsigned int)(i * mat.col + j)] == 0)
+                {
+                    multi++;
+                    continue;
+                }
+                mat3_data[(unsigned int)(i * mat.col + j)] = scalar * mat.data[(unsigned int)(i * mat.col + j)];
+                int n = 0;
+            }
+        }v++;
+        Matrix mat3(mat3_data, mat.row, mat.col);
+        return mat3;
     }
     double Matrix::sumMatrix()
     {
@@ -335,28 +362,7 @@ namespace zich
         bigeq++;
         return this->sumMatrix() >= mat.sumMatrix();
     }
-    bool Matrix::operator<(Matrix &mat)
-    {
-        int small = 0;
-        if (this->row != mat.row || this->col != mat.col)
-        {
-            small--;
-            throw runtime_error("row and cols must be equals");
-        }
-        small++;
-        return this->sumMatrix() < mat.sumMatrix();
-    }
-    bool Matrix::operator<=(Matrix &mat)
-    {
-        int smalleq = 0;
-        if (this->row != mat.row || this->col != mat.col)
-        {
-            smalleq--;
-            throw runtime_error("row and cols must be equals");
-        }
-        smalleq++;
-        return this->sumMatrix() <= mat.sumMatrix();
-    }
+    
     
     bool Matrix::operator!=(Matrix &mat)
     {
@@ -509,6 +515,31 @@ namespace zich
         mat.col = col;
         return input;
     }
+     Matrix Matrix::operator-(const Matrix &mat)
+    {
+        int minus = 0;
+        if (this->row != mat.row || this->col != mat.col)
+        {
+            minus--;
+            throw runtime_error("row and col must be equal");
+        }
+        vector<double> mat3_data;
+        int x = 0;
+        mat3_data.resize((unsigned int)(row * col));
+        for (int i = 0; i < row; i++)
+        {
+            minus++;
+            for (int j = 0; j < col; j++)
+            {
+                minus++;
+                mat3_data[(unsigned int)(i * col + j)] = this->data[(unsigned int)(i * col + j)] - mat.data[(unsigned int)(i * col + j)];
+                x++;
+            }   
+            x++;
+        }
+        Matrix mat3(mat3_data, this->row, mat.col);
+        return mat3;
+    }
     Matrix operator-(Matrix &mat)
     {
         vector<double> mat3_data;
@@ -557,54 +588,29 @@ namespace zich
         Matrix mat3(mat3_data, mat.row, mat.col);
         return mat3;
     }
-    bool operator ==(Matrix const &mat1,Matrix const &mat2)
+     Matrix Matrix::operator+(Matrix const &mat)
     {
-        int eq = 0;
-        if (mat1.row != mat2.row || mat1.col != mat2.col)
+        int plus = 0;
+        if (this->row != mat.row || this->col != mat.col)
         {
-            eq--;
-            throw invalid_argument("row and cols must be equals");
+            throw runtime_error("row and col must be equal");
         }
-        for (int i = 0; i < mat1.row; i++)
-        {
-            eq++;
-            for (int j = 0; j < mat1.col; j++)
-            {
-                eq++;
-                int p = 0;
-                if (mat1.data[(unsigned int)(i * mat1.col + j)] != mat2.data[(unsigned int)(i * mat2.col + j)])
-                {
-                    int c = 0;
-                    eq++;
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    Matrix operator*(const double scalar, Matrix &mat)
-    {
-        int multi = 0;
+        int x = 0;
         vector<double> mat3_data;
-        int v = 0;
-        mat3_data.resize((unsigned int)(mat.row * mat.col));
-        for (int i = 0; i < mat.row; i++)
+        mat3_data.resize((unsigned int)(row * col));
+        for (int i = 0; i < row; i++)
         {
-            multi++;
-            for (int j = 0; j < mat.col; j++)
+            plus++;
+            for (int j = 0; j < col; j++)
             {
-                multi++;
-                if (mat.data[(unsigned int)(i * mat.col + j)] == 0)
-                {
-                    multi++;
-                    continue;
-                }
-                mat3_data[(unsigned int)(i * mat.col + j)] = scalar * mat.data[(unsigned int)(i * mat.col + j)];
-                int n = 0;
-            }
-        }v++;
-        Matrix mat3(mat3_data, mat.row, mat.col);
+                plus++;
+                mat3_data[(unsigned int)(i * col + j)] = this->data[(unsigned int)(i * col + j)] + mat.data[(unsigned int)(i * col + j)];
+            }x++;
+        }
+        x++;
+        Matrix mat3(mat3_data, this->row, mat.col);
         return mat3;
     }
+   
 }
 
