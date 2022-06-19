@@ -8,53 +8,44 @@ namespace zich
 {
     class Matrix
     {
-    private:
-        int row;
-        int col;
-        vector<double> data;
-
     public:
-        Matrix();
-        Matrix(const vector<double> &data, const int row, const int col);
+        int getRow(){
+            return this->row;
+        }
+        int getCol(){
+            return this->col;
+        }
+        bool operator>(Matrix &mat);
+        bool operator>=(Matrix &mat);
         ~Matrix();
         Matrix operator+(Matrix const &mat);
         Matrix& operator++();
         Matrix operator++(const int num);
-        Matrix& operator+=(const Matrix &mat);
-
+        bool operator<(Matrix &mat);
+        friend bool operator==(Matrix const &mat1,Matrix const &mat2);
+        friend Matrix operator+(Matrix &mat);
+        bool operator<=(Matrix &mat);
+        bool operator!=(Matrix &mat);
+        Matrix operator*(const double scalar);
+        friend Matrix operator-(Matrix &mat);
         Matrix operator-(const Matrix &mat);
-        Matrix& operator--();
-        Matrix operator--(const int num);
-        Matrix& operator-=(const Matrix &mat);
-
         Matrix operator*(const Matrix &mat);
         Matrix& operator*=(const Matrix &mat);
-
-        Matrix operator*(const double scalar);
+        friend Matrix operator*(const double scalar, Matrix &mat);
         Matrix& operator*=(const double scalar);
-
-        bool operator>(Matrix &mat);
-        bool operator>=(Matrix &mat);
-        bool operator<(Matrix &mat);
-        bool operator<=(Matrix &mat);
-        // bool operator==(Matrix const &mat);
-        bool operator!=(Matrix &mat);
         double multiplication(const Matrix &mat, const int tempRow, const int tempCol);
         double sumMatrix();
         friend ostream & operator << (ostream &out, const Matrix &mat);
+        Matrix& operator--();
+        Matrix operator--(const int num);
+        Matrix& operator-=(const Matrix &mat);
+        Matrix();
+        Matrix(const vector<double> &data, const int row, const int col);
+        Matrix& operator+=(const Matrix &mat);
         friend istream& operator>> (istream &input , Matrix& mat);
-        friend Matrix operator-(Matrix &mat);
-        friend bool operator==(Matrix const &mat1,Matrix const &mat2);
-        friend Matrix operator+(Matrix &mat);
-        friend Matrix operator*(const double scalar, Matrix &mat);
+    private:
+        int row;
+        int col;
+        vector<double> data;    
     };
-    
-    //  Matrix::Matrix(/* args */)
-    //  {
-    //  }
-
-    //  Matrix::~Matrix()
-    //  {
-    //  }
-
 }

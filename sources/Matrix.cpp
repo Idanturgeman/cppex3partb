@@ -42,7 +42,7 @@ namespace zich
                     continue;
                 }
                 int y = 0;
-                mat3_data[(unsigned int)(i * this->col + j)] = this->data[(unsigned int)(i * this->col + j)] * scalar;
+                mat3_data[(unsigned int)(i * getCol() + j)] = this->data[(unsigned int)(i * getCol() + j)] * scalar;
                 int b = 0;
             }
             x++;
@@ -124,7 +124,7 @@ namespace zich
             for (int j = 0; j < this->col; j++)
             {
                 int h = 0;
-                this->data[(unsigned int)(i * col + j)] += mat.data[(unsigned int)(i * col + j)];
+                this->data[(unsigned int)(i * getCol() + j)] += mat.data[(unsigned int)(i * getCol() + j)];
                 int s = 0;
             }   
             
@@ -181,7 +181,7 @@ namespace zich
             for (int j = 0; j < this->col; j++)
             {
                 int u = 0;
-                this->data[(unsigned int)(i * col + j)] -= mat.data[(unsigned int)(i * col + j)];
+                this->data[(unsigned int)(i * getCol() + j)] -= mat.data[(unsigned int)(i * getCol() + j)];
                 int z = 0;
             }
             x++;
@@ -196,7 +196,7 @@ namespace zich
         for (int i = 0; i < this->col; i++)
         {
             int c = 0;
-            sum += this->data[(unsigned int)(this->col * tempRow + i)] * mat.data[(unsigned int)(mat.col * i + tempCol)];
+            sum += this->data[(unsigned int)(getCol() * tempRow + i)] * mat.data[(unsigned int)(mat.col * i + tempCol)];
             int a = 0;
         }
         x++;
@@ -536,7 +536,7 @@ namespace zich
             for (int j = 0; j < col; j++)
             {
                 int f = 0;
-                mat3_data[(unsigned int)(i * col + j)] = this->data[(unsigned int)(i * col + j)] - mat.data[(unsigned int)(i * col + j)];
+                mat3_data[(unsigned int)(i * getCol() + j)] = this->data[(unsigned int)(i * getCol() + j)] - mat.data[(unsigned int)(i * getCol() + j)];
                 int p = 0;
             }   
             x++;
@@ -610,7 +610,7 @@ namespace zich
             for (int j = 0; j < col; j++)
             {
                 plus++;
-                mat3_data[(unsigned int)(i * col + j)] = this->data[(unsigned int)(i * col + j)] + mat.data[(unsigned int)(i * col + j)];
+                mat3_data[(unsigned int)(i * getCol() + j)] = this->data[(unsigned int)(i * getCol() + j)] + mat.data[(unsigned int)(i * getCol() + j)];
                 int v = 0;
             }
         }
